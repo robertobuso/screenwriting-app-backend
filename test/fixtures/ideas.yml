@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  content: MyText
+  protagonist: MyString
+  antagonist: MyString
+  begins: MyString
+  ends: MyString
+  act: 1
+  turn: MyString
+  project: one
+
+two:
+  title: MyString
+  content: MyText
+  protagonist: MyString
+  antagonist: MyString
+  begins: MyString
+  ends: MyString
+  act: 1
+  turn: MyString
+  project: two

@@ -1,0 +1,12 @@
+Project.create(title:"Best Script Ever", protagonist: "Scarlett")
+
+Idea.create(content: "They Meet", title: "uno", act: 1, project_id: 1)
+Idea.create(content: "They like Each Other", title: "dos", turn: "Inciting Incident", project_id: 1)
+Idea.create(content: "Airplane Crashes and Uncle Dies", title: "tres", begins: "+", ends: "---", project_id: 1)
+Idea.create(content: "They Make Up", title: "cuatro", turn: "Denouement", project_id: 1)
+Idea.create(content: "A Day At The Park", title: "cinco", act: 2, project_id: 1)
+Idea.create(content: "Will She???", title: "seis", turn: "Crisis Decision", project_id: 1)
+Idea.create(content: "The Altoids Are Found", title: "siete", begins:"-", ends:"+", project_id: 1)
+Idea.create(content: "Too Much Fun in the Sun", title: "ocho", act: 3, project_id: 1)
+Idea.create(content: "Musical Interlude", title: "nueve", act: 2, project_id: 1)
+Idea.create(content: "Abstract Dream Sequence", title: "diez", project_id: 1)
