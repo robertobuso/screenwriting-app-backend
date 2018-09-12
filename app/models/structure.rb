@@ -3,8 +3,13 @@ class Structure < ApplicationRecord
 
 ##Convert hash into array of Idea objects
   def self.generate_array(structure_hash)
-    all_scenes = structure_hash.map do |key, value|
-      Idea.find(value)
+    all_scenes = []
+    structure_hash.each do |arr|
+      arr.each do |key, value|
+        if Idea.find(value).inspiration.nil? && Idea.find(value).research.nil?
+          all_scenes << Idea.find(value)
+        end
+      end
     end
     self.create_acts(all_scenes)
   end
@@ -138,29 +143,5 @@ class Structure < ApplicationRecord
   end
 
   def organize_act_four
-  end
-
-##Acts by Length
-  def act_one
-    all_scenes[0..(@total_scenes * 0.2)-1]
-  end
-
-  def act_two
-    all_scenes[(@total_scenes * 0.2)..self.midpoint-1]
-  end
-
-  def act_three
-    all_scenes[(self.midpoint)..(self.midpoint + @total_scenes * 0.3)]
-  end
-
-  def act_four
-    all_scenes[((@total_scenes*0.8)+1..@total_scenes-1)]
-  end
-
-
-  private
-
-  def midpoint
-  ((@total_scenes * 0.5)).ceil
   end
 end

@@ -3,6 +3,8 @@ class Api::V1::StructuresController < ApplicationController
 
   def index
     @structures = Structure.all
+    Structure.generate_array(@structures[0].order)
+
     render json: @structures
   end
 
@@ -30,7 +32,7 @@ class Api::V1::StructuresController < ApplicationController
   private
 
   def structure_params
-    params.permit(:title, :saved, :order_of_ideas, :order, :project_id)
+    params.permit(:title, :saved, :order, :project_id)
   end
 
   def find_structure
