@@ -1,15 +1,16 @@
 class Structure < ApplicationRecord
   belongs_to :project
 
-  def order
-    self.order_of_ideas.map do |scene|
-      scene.to_i
+##Convert hash into array of Idea objects
+  def self.generate_array(structure_hash)
+    all_scenes = structure_hash.map do |key, value|
+      Idea.find(value)
     end
+    self.create_acts(all_scenes)
   end
 
 ##Divide scenes by marked acts
-  def self.create_acts
-    @all_scenes = Idea.all.to_a
+  def self.create_acts(all_scenes)
     @total_scenes = Idea.all.length
 
     @act_one_scenes = []
@@ -19,21 +20,21 @@ class Structure < ApplicationRecord
 
     idx = 0
     counter = 0
-    until @all_scenes.length == 0 || idx > @all_scenes.length - 1 do
-      if !@all_scenes[idx]["act"].nil?
-        case @all_scenes[idx]["act"]
+    until all_scenes.length == 0 || idx > all_scenes.length - 1 do
+      if !all_scenes[idx]["act"].nil?
+        case all_scenes[idx]["act"]
           when 1
-            @act_one_scenes << @all_scenes[idx]
-            @all_scenes.delete(@all_scenes[idx])
+            @act_one_scenes << all_scenes[idx]
+            all_scenes.delete(all_scenes[idx])
           when 2
-            @act_two_scenes << @all_scenes[idx]
-            @all_scenes.delete(@all_scenes[idx])
+            @act_two_scenes << all_scenes[idx]
+            all_scenes.delete(all_scenes[idx])
           when 3
-            @act_three_scenes << @all_scenes[idx]
-            @all_scenes.delete(@all_scenes[idx])
+            @act_three_scenes << all_scenes[idx]
+            all_scenes.delete(all_scenes[idx])
           when 4
-            @act_four_scenes << @all_scenes[idx]
-            @all_scenes.delete(@all_scenes[idx])
+            @act_four_scenes << all_scenes[idx]
+            all_scenes.delete(all_scenes[idx])
           else
             idx = idx + 1
         end
@@ -41,60 +42,60 @@ class Structure < ApplicationRecord
         idx = idx + 1
       end
     end
-  self.find_turns
+  self.find_turns(all_scenes)
   end
 
 ##Divide scenes by turns
-  def self.find_turns
-   @all_scenes.each do |scene|
+  def self.find_turns(all_scenes)
+   all_scenes.each do |scene|
       if scene.turn == "Inciting Incident" || scene.turn == "Break Into Two"
         @act_one_scenes << scene
-        @all_scenes.delete(scene)
+        all_scenes.delete(scene)
       elsif scene.turn == "Midpoint"
         @act_two_scenes << scene
-        @all_scenes.delete(scene)
+        all_scenes.delete(scene)
       elsif scene.turn == "Break Into Three" || scene.turn == "Crisis Decision"
         @act_three_scenes << scene
-        @all_scenes.delete(scene)
+        all_scenes.delete(scene)
       elsif scene.turn == "Denouement"
         @act_four_scenes <<scene
-        @all_scenes.delete(scene)
+        all_scenes.delete(scene)
       end
     end
-    self.find_by_arc
+    self.find_by_arc(all_scenes)
   end
 
 ##Divide scenes by scene-arc
-  def self.find_by_arc
-    if !Idea.plus_plus(@all_scenes).nil?
-      @act_one_scenes << Idea.plus_plus(@all_scenes)
-      @all_scenes.delete(Idea.plus_plus(@all_scenes))
+  def self.find_by_arc(all_scenes)
+    if !Idea.plus_plus(all_scenes).nil?
+      @act_one_scenes << Idea.plus_plus(all_scenes)
+      all_scenes.delete(Idea.plus_plus(all_scenes))
     end
-    if !Idea.minus_minus(@all_scenes).nil?
-      @act_one_scenes << Idea.minus_minus(@all_scenes)
-      @all_scenes.delete(Idea.minus_minus(@all_scenes))
+    if !Idea.minus_minus(all_scenes).nil?
+      @act_one_scenes << Idea.minus_minus(all_scenes)
+      all_scenes.delete(Idea.minus_minus(all_scenes))
     end
-    if !Idea.minus_plus(@all_scenes).nil?
-      @act_one_scenes << Idea.minus_plus(@all_scenes)
-      @all_scenes.delete(Idea.minus_plus(@all_scenes))
+    if !Idea.minus_plus(all_scenes).nil?
+      @act_one_scenes << Idea.minus_plus(all_scenes)
+      all_scenes.delete(Idea.minus_plus(all_scenes))
     end
-    if !Idea.plus_triple_plus(@all_scenes).nil?
-      @act_three_scenes << Idea.plus_triple_plus(@all_scenes)
-      @all_scenes.delete(Idea.plus_triple_plus(@all_scenes))
+    if !Idea.plus_triple_plus(all_scenes).nil?
+      @act_three_scenes << Idea.plus_triple_plus(all_scenes)
+      all_scenes.delete(Idea.plus_triple_plus(all_scenes))
     end
-    if !Idea.plus_triple_minus(@all_scenes).nil?
-      @act_three_scenes << Idea.plus_triple_minus(@all_scenes)
-      @all_scenes.delete(Idea.plus_triple_minus(@all_scenes))
+    if !Idea.plus_triple_minus(all_scenes).nil?
+      @act_three_scenes << Idea.plus_triple_minus(all_scenes)
+      all_scenes.delete(Idea.plus_triple_minus(all_scenes))
     end
-    if !Idea.minus_triple_plus(@all_scenes).nil?
-      @act_three_scenes << Idea.minus_triple_plus(@all_scenes)
-      @all_scenes.delete(Idea.minus_triple_plus(@all_scenes))
+    if !Idea.minus_triple_plus(all_scenes).nil?
+      @act_three_scenes << Idea.minus_triple_plus(all_scenes)
+      all_scenes.delete(Idea.minus_triple_plus(all_scenes))
     end
-    if !Idea.minus_triple_minus(@all_scenes).nil?
-      @act_three_scenes << Idea.minus_triple_minus(@all_scenes)
-      @all_scenes.delete(Idea.minus_triple_minus(@all_scenes))
+    if !Idea.minus_triple_minus(all_scenes).nil?
+      @act_three_scenes << Idea.minus_triple_minus(all_scenes)
+      all_scenes.delete(Idea.minus_triple_minus(all_scenes))
     end
-      @act_two_scenes << @all_scenes
+      @act_two_scenes << all_scenes
 
     @act_one_scenes = @act_one_scenes.uniq
     @act_two_scenes = @act_two_scenes.uniq
@@ -105,8 +106,25 @@ class Structure < ApplicationRecord
   end
 
   def self.i_am_here
-    puts "WE NEED TO KEEP WORKING! But we're finally getting close to that mvp."
-    # organize_act_one???
+    final_array = @act_one_scenes + @act_two_scenes + @act_three_scenes + @act_four_scenes
+
+    new_structure = final_array.flatten.uniq.map do |scene|
+      scene.id
+    end
+
+    self.create_hash(new_structure)
+  end
+
+  def self.create_hash(new_structure)
+    @returned_array = []
+    div_id = 1
+
+    new_structure.each do |id|
+      @returned_array << { div_id => id }
+      div_id = div_id + 1
+    end
+
+    return @returned_array
   end
 
   def organize_act_one
@@ -124,19 +142,19 @@ class Structure < ApplicationRecord
 
 ##Acts by Length
   def act_one
-    @all_scenes[0..(@total_scenes * 0.2)-1]
+    all_scenes[0..(@total_scenes * 0.2)-1]
   end
 
   def act_two
-    @all_scenes[(@total_scenes * 0.2)..self.midpoint-1]
+    all_scenes[(@total_scenes * 0.2)..self.midpoint-1]
   end
 
   def act_three
-    @all_scenes[(self.midpoint)..(self.midpoint + @total_scenes * 0.3)]
+    all_scenes[(self.midpoint)..(self.midpoint + @total_scenes * 0.3)]
   end
 
   def act_four
-    @all_scenes[((@total_scenes*0.8)+1..@total_scenes-1)]
+    all_scenes[((@total_scenes*0.8)+1..@total_scenes-1)]
   end
 
 
