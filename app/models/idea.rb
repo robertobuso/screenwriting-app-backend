@@ -51,12 +51,28 @@ class Idea < ApplicationRecord
   end
 
   ##Attributes to Organize Search Functionality
+  # def self.show_by(attr, arg)
+  #   arg.select { |scene| !scene."#{attr}".nil?}
+  # end
+  #
   def self.show_research(arg)
     arg.select { |scene| !scene.research.nil?}
   end
 
   def self.show_inspiration(arg)
     arg.select { |scene| !scene.inspiration.nil?}
+  end
+
+  def self.show_description(arg)
+    arg.select { |scene| !scene.description.nil?}
+  end
+
+  def self.show_conflict(arg)
+    arg.select { |scene| !scene.conflict.nil?}
+  end
+
+  def self.show_miscellaneous(arg)
+    arg.select { |scene| !scene.miscellaneous.nil?}
   end
 
   ##Acts by Length

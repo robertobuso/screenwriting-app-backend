@@ -128,10 +128,11 @@ class Structure < ApplicationRecord
       @returned_array << { div_id => id }
       div_id = div_id + 1
     end
-
+byebug
     return @returned_array
   end
 
+##We order the scenes inside each individual act
   def organize_act_one
     # @final_act_one = [(Idea.plus_plus(@act_one_scenes)) + (Idea.plus_minus(@act_one_scenes)) + (Idea.minus_plus(@act_one_scenes)) + INCITING INCIDENT? MORE SCENES? BREAK INTO TWO???
   end
@@ -143,5 +144,57 @@ class Structure < ApplicationRecord
   end
 
   def organize_act_four
+  end
+
+  ##Order the ideas by Attributes
+
+  def self.order_by_research
+    ideas = Idea.show_research(Idea.all)
+    ideas.map do |idea|
+      idea.id
+    end
+    Structure.create_hash_from_attributes(ideas)
+  end
+
+  def self.order_by_inspiration
+    ideas = Idea.show_inspiration(Idea.all)
+    ideas.map do |idea|
+      idea.id
+    end
+    Structure.create_hash_from_attributes(ideas)
+  end
+
+  def self.order_by_description
+    ideas = Idea.show_description(Idea.all)
+    ideas.map do |idea|
+      idea.id
+    end
+    Structure.create_hash_from_attributes(ideas)
+  end
+
+  def self.order_by_conflict
+    ideas = Idea.show_conflict(Idea.all)
+    ideas.map do |idea|
+      idea.id
+    end
+    Structure.create_hash_from_attributes(ideas)
+  end
+
+  def self.order_by_miscellaneous
+    ideas = Idea.show_miscellaneous(Idea.all)
+    ideas.map do |idea|
+      idea.id
+    end
+    Structure.create_hash_from_attributes(ideas)
+  end
+
+  def self.create_hash_from_attributes(arg)
+    new_arr = []
+    div_id = 1
+    arg.each do |idea|
+      new_arr << { div_id => idea.id }
+      div_id = div_id + 1
+    end
+    return new_arr
   end
 end
