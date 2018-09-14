@@ -3,16 +3,20 @@ class Api::V1::StructuresController < ApplicationController
 
   def index
     @structures = Structure.all
-    Structure.generate_array(@structures[0].order)
 
     render json: @structures
   end
 
   def create
-    @structure = Structure.create(structure_params)
-    if @structure
-      Structure.generate_array(@structure.order)
-
+    @structure = Structure.new(structure_params)
+    if @structure.saved
+      @structure.order = Structure.generate_array(@structure.order)
+        if @structure.save
+          render json: @structure, status: :accepted
+        else
+          render json: { errors: @structure.errors.full_messages}, status: :unprocessable_entity
+        end
+    elsif @structure.save
       render json: @structure, status: :accepted
     else
       render json: { errors: @structure.errors.full_messages}, status: :unprocessable_entity
@@ -32,7 +36,7 @@ class Api::V1::StructuresController < ApplicationController
   private
 
   def structure_params
-    params.permit(:title, :saved, :order, :project_id)
+    params.permit(:title, :saved, :project_id, {:order => (1..100).map(&:to_s)})
   end
 
   def find_structure

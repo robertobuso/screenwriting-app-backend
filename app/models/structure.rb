@@ -6,7 +6,7 @@ class Structure < ApplicationRecord
     all_scenes = []
     structure_hash.each do |arr|
       arr.each do |key, value|
-        if Idea.find(value).inspiration.nil? && Idea.find(value).research.nil?
+        if (Idea.find(value).inspiration.nil? || Idea.find(value).inspiration.empty?) && (Idea.find(value).research.nil? || Idea.find(value).research.empty?)
           all_scenes << Idea.find(value)
         end
       end

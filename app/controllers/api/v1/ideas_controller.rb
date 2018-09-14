@@ -28,7 +28,7 @@ class Api::V1::IdeasController < ApplicationController
   private
 
   def idea_params
-    params.permit(:title, :content, :protagonist, :antagonist, :begins, :ends, :act, :turn, :project_id)
+    params.permit(:title, :content, :protagonist, :antagonist, :begins, :ends, :act, :turn, :project_id, :description, :conflict, :research, :inspiration, :miscellaneous)
   end
 
   def find_idea

@@ -56,11 +56,11 @@ class Idea < ApplicationRecord
   # end
   #
   def self.show_research(arg)
-    arg.select { |scene| !scene.research.nil?}
+    arg.select { |scene| !scene.research.empty?}
   end
 
   def self.show_inspiration(arg)
-    arg.select { |scene| !scene.inspiration.nil?}
+    arg.select { |scene| !scene.inspiration.empty?}
   end
 
   def self.show_description(arg)
