@@ -1,5 +1,4 @@
 class Api::V1::IdeasController < ApplicationController
-  before_action :find_idea, only: [:update]
 
   def index
     @ideas = Idea.all
@@ -21,8 +20,9 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def update
+    @idea = Idea.find(params[:id])
     @idea.update(idea_params)
-    if @idea.save
+    if @idea
       render json: @idea, status: :accepted
     else
       render json: { errors: @idea.errors.full_messages}, status: :unprocessable_entity
@@ -34,10 +34,6 @@ class Api::V1::IdeasController < ApplicationController
 
   def idea_params
     params.permit(:title, :content, :protagonist, :antagonist, :begins, :ends, :act, :turn, :project_id, :description, :conflict, :research, :inspiration, :miscellaneous)
-  end
-
-  def find_idea
-    @idea = Idea.find(params[:id])
   end
 
 end
