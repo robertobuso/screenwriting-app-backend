@@ -56,23 +56,53 @@ class Idea < ApplicationRecord
   # end
   #
   def self.show_research(arg)
-    arg.select { |scene| !scene.research.empty?}
+    new_arr = []
+    arg.each do |scene_one|
+      if !scene_one.research.nil? && !scene_one.research.empty?
+        new_arr << scene_one
+      end
+    end
+    return new_arr
   end
 
   def self.show_inspiration(arg)
-    arg.select { |scene| !scene.inspiration.empty?}
+    new_arr = []
+    arg.each do |scene_one|
+      if !scene_one.inspiration.nil? && !scene_one.inspiration.empty?
+        new_arr << scene_one
+      end
+    end
+    return new_arr
   end
 
   def self.show_description(arg)
-    arg.select { |scene| !scene.description.nil?}
+    new_arr = []
+    arg.each do |scene_one|
+      if !scene_one.description.nil? && !scene_one.description.empty?
+        new_arr << scene_one
+      end
+    end
+    return new_arr
   end
 
   def self.show_conflict(arg)
-    arg.select { |scene| !scene.conflict.nil?}
+    new_arr = []
+    arg.each do |scene_one|
+      if !scene_one.conflict.nil? && !scene_one.conflict.empty?
+        new_arr << scene_one
+      end
+    end
+    return new_arr
   end
 
   def self.show_miscellaneous(arg)
-    arg.select { |scene| !scene.miscellaneous.nil?}
+    new_arr = []
+    arg.each do |scene_one|
+      if !scene_one.miscellaneous.nil? && !scene_one.miscellaneous.empty?
+        new_arr << scene_one
+      end
+    end
+    return new_arr
   end
 
   ##Acts by Length

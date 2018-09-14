@@ -128,7 +128,6 @@ class Structure < ApplicationRecord
       @returned_array << { div_id => id }
       div_id = div_id + 1
     end
-byebug
     return @returned_array
   end
 
@@ -147,6 +146,21 @@ byebug
   end
 
   ##Order the ideas by Attributes
+
+  def self.search_by_attribute (idea)
+    case idea.search_by
+    when "research"
+      self.order_by_research
+    when "inspiration"
+      self.order_by_inspiration
+    when "description"
+      self.order_by_description
+    when "conflict"
+      self.order_by_conflict
+    when "miscellaneous"
+      self.order_by_miscellaneous
+    end
+  end
 
   def self.order_by_research
     ideas = Idea.show_research(Idea.all)
