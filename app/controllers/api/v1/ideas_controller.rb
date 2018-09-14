@@ -6,6 +6,11 @@ class Api::V1::IdeasController < ApplicationController
     render json: @ideas
   end
 
+  def show
+    @idea = Idea.find(params[:id])
+    render json: @idea
+  end
+
   def create
     @idea = Idea.create(idea_params)
     if @idea
